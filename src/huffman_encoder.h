@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Dictionary.h"
+#include "dictionary.h"
 
 const int MAX_CODE_LENGTH = 100;
 

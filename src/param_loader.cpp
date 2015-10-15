@@ -1,4 +1,4 @@
-#include "ParamLoader.h"
+#include "param_loader.h"
 
 template<typename T>
 ParameterLoader<T>::ParameterLoader(Option *option, void** word2vector_neural_networks, WordSenseInfo* word_sense_info)

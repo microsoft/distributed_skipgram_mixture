@@ -1,4 +1,4 @@
-#include "SkipGramMixtureNeuralNetwork.h"
+#include "skipgram_mixture_neural_network.h"
 
 template<typename T>
 SkipGramMixtureNeuralNetwork<T>::SkipGramMixtureNeuralNetwork(Option* option, HuffmanEncoder* huffmanEncoder, WordSenseInfo* word_sense_info,  Dictionary* dic, int dicSize)

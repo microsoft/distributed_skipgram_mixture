@@ -2,10 +2,10 @@
 
 #include <vector>
 
-#include "Util.h"
+#include "util.h"
 #include <multiverso.h>
-#include "HuffmanEncoder.h"
-#include "MultiversoSkipGramMixture.h"
+#include "huffman_encoder.h"
+#include "multiverso_skipgram_mixture.h"
 #include "cstring"
 
 enum class UpdateDirection

@@ -9,12 +9,12 @@
 #include <multiverso.h>
 #include <log.h>
 
-#include "Util.h"
-#include "HuffmanEncoder.h"
-#include "DataBlock.h"
-#include "ParamLoader.h"
-#include "Trainer.h"
-#include "Reader.h"
+#include "util.h"
+#include "huffman_encoder.h"
+#include "data_block.h"
+#include "param_loader.h"
+#include "trainer.h"
+#include "reader.h"
 
 class MultiversoSkipGramMixture
 {

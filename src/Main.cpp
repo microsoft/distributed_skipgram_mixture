@@ -9,14 +9,14 @@
 #include <multiverso.h>
 #include <barrier.h>
 
-#include "Dictionary.h"
-#include "HuffmanEncoder.h"
-#include "Util.h"
-#include "Reader.h"
-#include "MultiversoSkipGramMixture.h"
-#include "ParamLoader.h"
-#include "Trainer.h"
-#include "SkipGramMixtureNeuralNetwork.h"
+#include "dictionary.h"
+#include "huffman_encoder.h"
+#include "util.h"
+#include "reader.h"
+#include "multiverso_skipgram_mixture.h"
+#include "param_loader.h"
+#include "trainer.h"
+#include "skipgram_mixture_neural_network.h"
 
 bool ReadWord(char *word, FILE *fin)
 {

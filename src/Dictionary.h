@@ -4,7 +4,7 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
-#include "Util.h"
+#include "util.h"
 
 const int MAX_WORD_SIZE = 901;
 

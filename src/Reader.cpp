@@ -1,4 +1,4 @@
-#include "Reader.h"
+#include "reader.h"
 
 Reader::Reader(Dictionary *dictionary, Option *option)
 {

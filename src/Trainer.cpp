@@ -1,4 +1,4 @@
-#include "Trainer.h"
+#include "trainer.h"
 
 template<typename T>
 Trainer<T>::Trainer(int trainer_id, Option *option, void** word2vector_neural_networks, multiverso::Barrier *barrier, Dictionary* dictionary, WordSenseInfo* word_sense_info, HuffmanEncoder* huff_encoder)

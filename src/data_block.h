@@ -6,9 +6,9 @@
 * \author
 *	- v-fetia
 */
-#include "Util.h"
+#include "util.h"
 #include <multiverso.h>
-#include "HuffmanEncoder.h"
+#include "huffman_encoder.h"
 
 /*!
 * \brief The class DataBlock stores train for trainer and param_loader

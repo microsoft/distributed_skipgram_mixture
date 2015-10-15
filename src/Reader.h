@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Util.h"
-#include "Dictionary.h"
+#include "util.h"
+#include "dictionary.h"
 #include <mutex>
 #include <unordered_set>
 

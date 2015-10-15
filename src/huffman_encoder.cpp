@@ -1,4 +1,4 @@
-#include "HuffmanEncoder.h"
+#include "huffman_encoder.h"
 #include <algorithm>
 #include <assert.h>
 
