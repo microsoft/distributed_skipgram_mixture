@@ -5,7 +5,7 @@
 #include "multiverso_tablesid.h"
 #include "util.h"
 #include "huffman_encoder.h"
-#include "skipgram_mixture_neuralnetwork.h"
+#include "skipgram_mixture_neural_network.h"
 #include "log.h"
 
 
