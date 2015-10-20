@@ -21,7 +21,7 @@ WORD_EMBEDDING_SRC     = $(shell find $(PROJECT)/src -type f -name "*.cpp")
 WORD_EMBEDDING_OBJ = $(WORD_EMBEDDING_SRC:.cpp=.o)
 
 BIN_DIR = $(PROJECT)/bin
-WORD_EMBEDDING = $(BIN_DIR)/multisense_word_embedding
+WORD_EMBEDDING = $(BIN_DIR)/distributed_skipgram_mixture
 
 all: path \
 	 multisense_word_embedding 
