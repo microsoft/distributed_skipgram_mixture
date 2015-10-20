@@ -1,6 +1,6 @@
 # build word_embedding
 
-git clone https://github.com/msraai/multiverso
+git clone https://github.com/Microsoft/multiverso
 
 cd multiverso
 cd third_party
