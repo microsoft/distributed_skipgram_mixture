@@ -1,4 +1,4 @@
-#include "trainer.h"
+#include "Trainer.h"
 
 template<typename T>
 Trainer<T>::Trainer(int trainer_id, Option *option, void** word2vector_neural_networks, multiverso::Barrier *barrier, Dictionary* dictionary, WordSenseInfo* word_sense_info, HuffmanEncoder* huff_encoder)
@@ -12,8 +12,8 @@ Trainer<T>::Trainer(int trainer_id, Option *option, void** word2vector_neural_ne
 	m_word_sense_info = word_sense_info;
 	m_huffman_encoder = huff_encoder;
 
-	gamma = (T*)calloc(m_option-> window_size * MAX_SENSE_CNT, sizeof(T));
-	fTable = (T*)calloc(m_option-> window_size * MAX_CODE_LENGTH * MAX_SENSE_CNT, sizeof(T));
+	gamma = (T*)calloc(m_option->window_size * MAX_SENSE_CNT, sizeof(T));
+	fTable = (T*)calloc(m_option->window_size * MAX_CODE_LENGTH * MAX_SENSE_CNT, sizeof(T));
 	input_backup = (T*)calloc(m_option->embeding_size * MAX_SENSE_CNT, sizeof(T));
 
 	m_start_time = 0;
@@ -62,7 +62,7 @@ void Trainer<T>::TrainIteration(multiverso::DataBlockBase *data_block)
 	{
 		local_output_layer_nodes.push_back(output_layer_nodes[i]);
 	}
-	
+
 	CopyParameterFromMultiverso(local_input_layer_nodes, local_output_layer_nodes, word2vector_neural_network);
 
 	multiverso::Row<int64_t>& word_count_actual_row = GetRow<int64_t>(kWordCountActualTableId, 0);
@@ -72,11 +72,11 @@ void Trainer<T>::TrainIteration(multiverso::DataBlockBase *data_block)
 	word2vector_neural_network->learning_rate = learning_rate;
 
 	//Linearly increase the momentum from init_sense_prior_momentum to 1
-	word2vector_neural_network->sense_prior_momentum = m_option->init_sense_prior_momentum + 
+	word2vector_neural_network->sense_prior_momentum = m_option->init_sense_prior_momentum +
 		(1 - m_option->init_sense_prior_momentum) * word_count_actual_row.At(0) / (T)(m_option->total_words * m_option->epoch + 1);
-	
+
 	m_barrier->Wait();
-	
+
 	for (int i = m_trainer_id; i < data->Size(); i += m_option->thread_cnt)  //i iterates over all sentences
 	{
 		int sentence_length;
@@ -86,7 +86,7 @@ void Trainer<T>::TrainIteration(multiverso::DataBlockBase *data_block)
 		data->Get(i, sentence, sentence_length, word_count_deta, next_random);
 
 		word2vector_neural_network->Train(sentence, sentence_length, gamma, fTable, input_backup);
-		
+
 		m_word_count += word_count_deta;
 		if (m_word_count - m_last_word_count > 10000)
 		{
@@ -94,7 +94,7 @@ void Trainer<T>::TrainIteration(multiverso::DataBlockBase *data_block)
 			Add<int64_t>(kWordCountActualTableId, 0, 0, m_word_count - m_last_word_count);
 			m_last_word_count = m_word_count;
 			m_now_time = clock();
-			
+
 			if (m_trainer_id % 3 == 0)
 			{
 				multiverso::Log::Info("Rank %d Trainer %d lr: %.5f Mom: %.4f Progress: %.2f%% Words/thread/sec(total): %.2fk  W/t/sec(executive): %.2fk\n",
@@ -115,12 +115,12 @@ void Trainer<T>::TrainIteration(multiverso::DataBlockBase *data_block)
 			word2vector_neural_network->sense_prior_momentum = m_option->init_sense_prior_momentum + (1 - m_option->init_sense_prior_momentum) * word_count_actual_row.At(0) / (T)(m_option->total_words * m_option->epoch + 1);
 		}
 	}
-	
+
 	m_barrier->Wait();
 	AddParameterToMultiverso(local_input_layer_nodes, local_output_layer_nodes, word2vector_neural_network);
-	
+
 	m_executive_time += clock() - train_interation_start;
-	
+
 	multiverso::Log::Info("Rank %d Train %d end at %lfs, cost %lfs, total cost %lfs\n",
 		m_process_id,
 		m_trainer_id, clock() / (double)CLOCKS_PER_SEC,
@@ -159,7 +159,7 @@ template<typename T>
 int Trainer<T>::CopyParameterFromMultiverso(std::vector<int>& input_layer_nodes, std::vector<int>& output_layer_nodes, void* local_word2vector_neural_network)
 {
 	SkipGramMixtureNeuralNetwork<T>* word2vector_neural_network = (SkipGramMixtureNeuralNetwork<T>*)local_word2vector_neural_network;
-	
+
 	//Copy input embedding
 	for (int i = 0; i < input_layer_nodes.size(); ++i)
 	{
@@ -169,7 +169,7 @@ int Trainer<T>::CopyParameterFromMultiverso(std::vector<int>& input_layer_nodes,
 			CopyMemory(ptr + j * m_option->embeding_size, GetRow<T>(kInputEmbeddingTableId, row_id), m_option->embeding_size);
 		word2vector_neural_network->SetInputEmbeddingWeights(input_layer_nodes[i], ptr);
 	}
-	
+
 	//Copy output embedding
 	for (int i = 0; i < output_layer_nodes.size(); ++i)
 	{
@@ -184,7 +184,7 @@ int Trainer<T>::CopyParameterFromMultiverso(std::vector<int>& input_layer_nodes,
 			}
 		word2vector_neural_network->SetOutputEmbeddingWeights(output_layer_nodes[i], ptr);
 	}
-	
+
 	//Copy sense prior
 	for (int i = 0; i < input_layer_nodes.size(); ++i)
 	{
@@ -285,7 +285,7 @@ void Trainer<T>::SaveMultiInputEmbedding(const int epoch_id)
 
 		fid = fopen(outfile, "wb");
 
-	    fprintf(fid, "%d %d %d\n", m_dictionary->Size(), m_word_sense_info->total_senses_cnt, m_option->embeding_size);
+		fprintf(fid, "%d %d %d\n", m_dictionary->Size(), m_word_sense_info->total_senses_cnt, m_option->embeding_size);
 		for (int i = 0; i < m_dictionary->Size(); ++i)
 		{
 			fprintf(fid, "%s %d ", m_dictionary->GetWordInfo(i)->word.c_str(), m_word_sense_info->word_sense_cnts_info[i]);
@@ -297,7 +297,7 @@ void Trainer<T>::SaveMultiInputEmbedding(const int epoch_id)
 				CopyMemory(sense_priors_ptr, GetRow<T>(kWordSensePriorTableId, m_word_sense_info->p_wordidx2sense_idx[i]), m_option->sense_num_multi);
 				if (!m_option->store_multinomial)
 					Util::SoftMax(sense_priors_ptr, sense_priors_ptr, m_option->sense_num_multi);
-				
+
 				for (int j = 0; j < m_option->sense_num_multi; ++j)
 				{
 					fwrite(sense_priors_ptr + j, sizeof(real), 1, fid);
@@ -317,7 +317,7 @@ void Trainer<T>::SaveMultiInputEmbedding(const int epoch_id)
 				fwrite(&prob, sizeof(real), 1, fid);
 				emb_row_id = m_word_sense_info->p_input_embedding[i];
 				multiverso::Row<real>& embedding = GetRow<real>(kInputEmbeddingTableId, emb_row_id);
-				
+
 				for (int k = 0; k < m_option->embeding_size; ++k)
 				{
 					emb_tmp = embedding.At(k);

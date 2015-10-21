@@ -1,4 +1,4 @@
-#include "param_loader.h"
+#include "ParamLoader.h"
 
 template<typename T>
 ParameterLoader<T>::ParameterLoader(Option *option, void** word2vector_neural_networks, WordSenseInfo* word_sense_info)
@@ -21,12 +21,12 @@ void ParameterLoader<T>::ParseAndRequest(multiverso::DataBlockBase *data_block)
 	fprintf(m_log_file, "%lf\n", (clock() - m_start_time) / (double)CLOCKS_PER_SEC);
 	multiverso::Log::Info("Rank %d ParameterLoader begin %d\n", multiverso::Multiverso::ProcessRank(), m_parse_and_request_count);
 	DataBlock *data = reinterpret_cast<DataBlock*>(data_block);
-	
+
 	SkipGramMixtureNeuralNetwork<T>* sg_mixture_neural_network = reinterpret_cast<SkipGramMixtureNeuralNetwork<T>*>(m_sgmixture_neural_networks[m_parse_and_request_count % 2]);
 	++m_parse_and_request_count;
 	data->UpdateNextRandom();
 	sg_mixture_neural_network->PrepareParmeter(data);
-	
+
 	std::vector<int>& input_layer_nodes = sg_mixture_neural_network->GetInputLayerNodes();
 	std::vector<int>& output_layer_nodes = sg_mixture_neural_network->GetOutputLayerNodes();
 	assert(sg_mixture_neural_network->status == 0);

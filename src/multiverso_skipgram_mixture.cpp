@@ -1,4 +1,4 @@
-#include "multiverso_skipgram_mixture.h"
+#include "MultiversoSkipGramMixture.h"
 #include <algorithm>
 
 MultiversoSkipGramMixture::MultiversoSkipGramMixture(Option *option, Dictionary *dictionary, HuffmanEncoder *huffman_encoder, Reader *reader)
@@ -35,7 +35,7 @@ void MultiversoSkipGramMixture::InitSenseCntInfo()
 		m_word_sense_info.word_sense_cnts_info[wordlist[i].first] = 1;
 
 	//Then, read words #sense info from the sense file
-	if (m_option->sense_file) 
+	if (m_option->sense_file)
 	{
 		FILE* fid = fopen(m_option->sense_file, "r");
 		char word[1000];
@@ -58,7 +58,7 @@ void MultiversoSkipGramMixture::InitSenseCntInfo()
 	int cnt = 0;
 	m_word_sense_info.multi_senses_words_cnt = 0;
 
-	for (int i = 0; i < m_dictionary->Size(); ++i) 
+	for (int i = 0; i < m_dictionary->Size(); ++i)
 	{
 		m_word_sense_info.p_input_embedding[i] = cnt;
 		if (m_word_sense_info.word_sense_cnts_info[i] > 1)
@@ -107,7 +107,7 @@ void MultiversoSkipGramMixture::Train(int argc, char *argv[])
 	multiverso::Log::ResetLogFile("log.txt");
 	m_process_id = multiverso::Multiverso::ProcessRank();
 	PrepareMultiversoParameterTables(m_option, m_dictionary);
-	
+
 	printf("Start to train ...\n");
 	TrainNeuralNetwork();
 	printf("Rank %d Finish training\n", m_process_id);
@@ -156,7 +156,7 @@ void MultiversoSkipGramMixture::PrepareMultiversoParameterTables(Option *opt, Di
 	{
 		for (int col = 0; col < opt->sense_num_multi; ++col)
 		{
-			multiverso::Multiverso::AddToServer<real>(kWordSensePriorTableId, row, col, 
+			multiverso::Multiverso::AddToServer<real>(kWordSensePriorTableId, row, col,
 				static_cast<real>(m_option->store_multinomial ? 1.0 / m_option->sense_num_multi : log(1.0 / m_option->sense_num_multi)));
 		}
 	}
@@ -198,7 +198,7 @@ void MultiversoSkipGramMixture::PushDataBlock(
 	{
 		std::chrono::milliseconds dura(200);
 		std::this_thread::sleep_for(dura);
-		
+
 		RemoveDoneDataBlock(datablock_queue);
 	}
 }

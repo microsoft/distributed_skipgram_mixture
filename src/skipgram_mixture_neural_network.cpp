@@ -1,7 +1,7 @@
-#include "skipgram_mixture_neural_network.h"
+#include "SkipGramMixtureNeuralNetwork.h"
 
 template<typename T>
-SkipGramMixtureNeuralNetwork<T>::SkipGramMixtureNeuralNetwork(Option* option, HuffmanEncoder* huffmanEncoder, WordSenseInfo* word_sense_info,  Dictionary* dic, int dicSize)
+SkipGramMixtureNeuralNetwork<T>::SkipGramMixtureNeuralNetwork(Option* option, HuffmanEncoder* huffmanEncoder, WordSenseInfo* word_sense_info, Dictionary* dic, int dicSize)
 {
 	status = 0;
 	m_option = option;
@@ -37,18 +37,18 @@ SkipGramMixtureNeuralNetwork<T>::~SkipGramMixtureNeuralNetwork()
 }
 
 template<typename T>
-void SkipGramMixtureNeuralNetwork<T>::Train(int* sentence, int sentence_length, T* gamma, T* fTable, T* input_backup)
+void SkipGramMixtureNeuralNetwork<T>::Train(int* sentence, int sentence_length, T* gamma, T* f_table, T* input_backup)
 {
-	ParseSentence(sentence, sentence_length, gamma, fTable, input_backup, &SkipGramMixtureNeuralNetwork<T>::TrainSample);
+	ParseSentence(sentence, sentence_length, gamma, f_table, input_backup, &SkipGramMixtureNeuralNetwork<T>::TrainSample);
 }
 
 template<typename T>
 //The E - step, estimate the posterior multinomial probabilities
-T SkipGramMixtureNeuralNetwork<T>::Estimate_Gamma_m(int word_input, std::vector<std::pair<int, int> >& output_nodes, T* posterior_ll, T* estimation, T* sense_prior, T* f_m)
+T SkipGramMixtureNeuralNetwork<T>::EstimateGamma(int word_input, std::vector<std::pair<int, int> >& output_nodes, T* posterior_ll, T* estimation, T* sense_prior, T* f_m)
 {
-	T* inputEmbedding = m_input_embedding_weights_ptr[word_input];
+	T* input_embedding = m_input_embedding_weights_ptr[word_input];
 	T f, log_likelihood = 0;
-	for (int sense_idx = 0; sense_idx < m_word_sense_info->word_sense_cnts_info[word_input]; ++sense_idx, inputEmbedding += m_option->embeding_size)
+	for (int sense_idx = 0; sense_idx < m_word_sense_info->word_sense_cnts_info[word_input]; ++sense_idx, input_embedding += m_option->embeding_size)
 	{
 		posterior_ll[sense_idx] = sense_prior[sense_idx] < eps ? MIN_LOG : log(sense_prior[sense_idx]); //posterior likelihood for each sense
 
@@ -56,7 +56,7 @@ T SkipGramMixtureNeuralNetwork<T>::Estimate_Gamma_m(int word_input, std::vector<
 
 		for (int d = 0; d < output_nodes.size(); ++d, fidx++)
 		{
-			f = Util::InnerProduct(inputEmbedding, m_output_embedding_weights_ptr[output_nodes[d].first], m_option->embeding_size);
+			f = Util::InnerProduct(input_embedding, m_output_embedding_weights_ptr[output_nodes[d].first], m_option->embeding_size);
 			f = Util::Sigmoid(f);
 			f_m[fidx] = f;
 			if (output_nodes[d].second) //huffman code, 0 or 1
@@ -78,7 +78,7 @@ T SkipGramMixtureNeuralNetwork<T>::Estimate_Gamma_m(int word_input, std::vector<
 
 template<typename T>
 //The M Step: update the sense prior probabilities to maximize the Q function
-void SkipGramMixtureNeuralNetwork<T>::Maximize_Pi(int word_input, T* log_likelihood)
+void SkipGramMixtureNeuralNetwork<T>::MaximizeSensePriors(int word_input, T* log_likelihood)
 {
 	if (m_word_sense_info->word_sense_cnts_info[word_input] == 1)
 	{
@@ -101,11 +101,11 @@ void SkipGramMixtureNeuralNetwork<T>::UpdateEmbeddings(int word_input, std::vect
 {
 	T g;
 	T* output_embedding;
-	T* inputEmbedding;
+	T* input_embedding;
 	if (direction == UpdateDirection::UPDATE_INPUT)
-		inputEmbedding = m_input_embedding_weights_ptr[word_input];
-	else inputEmbedding = input_backup;
-	for (int sense_idx = 0; sense_idx < m_word_sense_info->word_sense_cnts_info[word_input]; ++sense_idx, inputEmbedding += m_option->embeding_size)
+		input_embedding = m_input_embedding_weights_ptr[word_input];
+	else input_embedding = input_backup;
+	for (int sense_idx = 0; sense_idx < m_word_sense_info->word_sense_cnts_info[word_input]; ++sense_idx, input_embedding += m_option->embeding_size)
 	{
 		int64_t fidx = sense_idx * MAX_CODE_LENGTH;
 		for (int d = 0; d < output_nodes.size(); ++d, ++fidx)
@@ -115,12 +115,12 @@ void SkipGramMixtureNeuralNetwork<T>::UpdateEmbeddings(int word_input, std::vect
 			if (direction == UpdateDirection::UPDATE_INPUT) //Update Input
 			{
 				for (int j = 0; j < m_option->embeding_size; ++j)
-					inputEmbedding[j] += g * output_embedding[j];
+					input_embedding[j] += g * output_embedding[j];
 			}
 			else  // Update Output
 			{
 				for (int j = 0; j < m_option->embeding_size; ++j)
-					output_embedding[j] += g * inputEmbedding[j];
+					output_embedding[j] += g * input_embedding[j];
 			}
 		}
 	}
@@ -132,7 +132,7 @@ template<typename T>
 void SkipGramMixtureNeuralNetwork<T>::TrainSample(int input_node, std::vector<std::pair<int, int> >& output_nodes, void* v_gamma, void* v_fTable, void* v_input_backup)
 {
 	T* gamma = (T*)v_gamma; //stores the posterior probabilities
-	T* fTable = (T*)v_fTable; //stores the inner product values of input and output embeddings
+	T* f_table = (T*)v_fTable; //stores the inner product values of input and output embeddings
 	T* input_backup = (T*)v_input_backup;
 
 	T posterior_ll[MAX_SENSE_CNT]; //stores the posterior log likelihood
@@ -149,16 +149,16 @@ void SkipGramMixtureNeuralNetwork<T>::TrainSample(int input_node, std::vector<st
 		log_likelihood = 0;
 
 		// E-Step
-		log_likelihood += Estimate_Gamma_m(input_node, output_nodes, posterior_ll, gamma, sense_prior, fTable);
+		log_likelihood += EstimateGamma(input_node, output_nodes, posterior_ll, gamma, sense_prior, f_table);
 
 		// M-Step
 		if (m_option->store_multinomial)
-			Maximize_Pi(input_node, gamma);
+			MaximizeSensePriors(input_node, gamma);
 		else
-			Maximize_Pi(input_node, posterior_ll);
+			MaximizeSensePriors(input_node, posterior_ll);
 
-		UpdateEmbeddings(input_node, output_nodes, gamma, fTable, input_backup, UpdateDirection::UPDATE_INPUT);
-		UpdateEmbeddings(input_node, output_nodes, gamma, fTable, input_backup, UpdateDirection::UPDATE_OUTPUT);
+		UpdateEmbeddings(input_node, output_nodes, gamma, f_table, input_backup, UpdateDirection::UPDATE_INPUT);
+		UpdateEmbeddings(input_node, output_nodes, gamma, f_table, input_backup, UpdateDirection::UPDATE_OUTPUT);
 
 	}
 }
@@ -205,10 +205,10 @@ void SkipGramMixtureNeuralNetwork<T>::DealPrepareParameter(int input_node, std::
 
 template<typename T>
 /*
-  Parse a sentence and deepen into two branchs:
-  one for TrainNN, the other one is for Parameter_parse&request
+Parse a sentence and deepen into two branchs:
+one for TrainNN, the other one is for Parameter_parse&request
 */
-void SkipGramMixtureNeuralNetwork<T>::ParseSentence(int* sentence, int sentence_length, T* gamma, T* fTable, T* input_backup, FunctionType function)
+void SkipGramMixtureNeuralNetwork<T>::ParseSentence(int* sentence, int sentence_length, T* gamma, T* f_table, T* input_backup, FunctionType function)
 {
 	if (sentence_length == 0)
 		return;
@@ -220,7 +220,7 @@ void SkipGramMixtureNeuralNetwork<T>::ParseSentence(int* sentence, int sentence_
 	{
 		if (sentence[sentence_position] == -1) continue;
 		int feat_size = 0;
-		
+
 		for (int i = 0; i < m_option->window_size * 2 + 1; ++i)
 			if (i != m_option->window_size)
 			{
@@ -233,7 +233,7 @@ void SkipGramMixtureNeuralNetwork<T>::ParseSentence(int* sentence, int sentence_
 					input_node = feat[feat_size - 1];
 					output_nodes.clear();
 					Parse(input_node, sentence[sentence_position], output_nodes);
-					(this->*function)(input_node, output_nodes, gamma, fTable, input_backup);
+					(this->*function)(input_node, output_nodes, gamma, f_table, input_backup);
 				}
 			}
 	}
@@ -282,7 +282,7 @@ std::vector<int>& SkipGramMixtureNeuralNetwork<T>::GetOutputLayerNodes()
 }
 
 template<typename T>
-void SkipGramMixtureNeuralNetwork<T>::SetInputEmbeddingWeights(int input_node_id, T* ptr)
+void SkipGramMixtureNeuralNetwork<T>::SetinputEmbeddingWeights(int input_node_id, T* ptr)
 {
 	m_input_embedding_weights_ptr[input_node_id] = ptr;
 }
@@ -306,7 +306,7 @@ void SkipGramMixtureNeuralNetwork<T>::SetSensePriorParaWeights(int input_node_id
 }
 
 template<typename T>
-T* SkipGramMixtureNeuralNetwork<T>::GetInputEmbeddingWeights(int input_node_id)
+T* SkipGramMixtureNeuralNetwork<T>::GetinputEmbeddingWeights(int input_node_id)
 {
 	return m_input_embedding_weights_ptr[input_node_id];
 }
