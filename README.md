@@ -10,7 +10,7 @@ Download
 ----------
 $ git clone https://github.com/Microsoft/distributed_skipgram_mixture 
 
-Installation
+Build
 ----------
 
 **Prerequisite**
