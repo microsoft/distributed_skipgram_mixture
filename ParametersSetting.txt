@@ -1,0 +1,38 @@
+
+
+The parameters for Skip-Gram Mixture Multi-Sense model:
+
+/************************For IO************************/
+-train_file: STRING. The training corpus file, e.g. enwiki2014.
+-vocab_file: STRING. The file to read all the vocab counts info, you must extract the words count info into this file.
+-binary: INTEGER. 0, 1 or 2, indicates whether to write all the embeddings vectors into binary format. Setting to 2 means to output both binary and text formats.
+-read_sense: STRING. The file storing all the pre-defined multi sense words. Each line for each word.
+-binary_embedding_file: STRING. The output file to store the multi sense input embedding vectors in binary format.
+-text_embedding_file: STRING. The output file to store the multi sense input embedding vectors in text format.
+-huff_tree_file: STRING. The output file to store the huffman tree structure.
+-outputlayer_binary_file: STRING. The output file to store the huffman tree node embedding vectors in binary format.
+-outputlayer_text_file: STRING. The output file to store the huffman tree node embedding vectors in text format.
+-stopwords: INTEGER. 0 or 1, whether to avoid training stop words.
+-sw_file: STRING. The stop words file storing all the stop words, valid when -stopwords = 1.
+
+/************************For training configuration************************/
+-size: INTEGER. Word embedding size, e.g. 50.
+-init_learning_rate: FLOAT. Initial learning rate, usually set to 0.025, then it will be linearly reduced to 1 during the training process.
+-window: INTEGER. The window size.
+-threads: INTEGER. The thread number to run in parallel in every single machine.
+-min_count: INTEGER. Words with lower frequency than min-count is removed from dictionary.
+-epoch: INTEGER. The epoch number.
+-sense_num_multi: INTEGER. How many senses for the multi-sense words.
+-momentum: FLOAT. The init momentum, must lie in (0, 1). Used to update the sense_priors by sense_priors_t = momentum * sense_priors_[t-1] + (1 - momentum) * \phi. It will be linearly increased to 1 during the training.
+-EM_iteration: INTEGER. The number of iterations in EM algorithm. Setting it to 1 is good and fast enough.
+-store_multinomial: BINARY. Ways to store the sense priors. 1 means store them as multinomial parameters (between 0 and 1 and their summation is 1), 0 means store them as the log of multinomial parameters.
+-top_n: INTEGER. Set the top_n frequent words as multi sense words.
+-top_ratio: FLOAT. Must lie in (0, 1), set the top_ratio most frequent words as multi sense words.
+
+/************************For Distributed Setting related with DMTK************************/
+-lock_option: INTEGER. The lock option. See documents of DMTK.
+-num_lock: INTEGER. The number of locks. See documents of DMTK.
+-max_delay: INTEGER. The max delay. See documents of DMTK. Strongly recommend setting to 0. 
+-is_pipline: BINARY. The pipeline setting. See documents of DMTK. Strongly recommend setting to 0.
+-data_block_size: INTEGER. The data block size. See documents of DMTK.
+-pre_load_data_blocks: INTEGER. The number of blocks to load before training. Set it to avoid memory malloc failure in case of very large corpus.
