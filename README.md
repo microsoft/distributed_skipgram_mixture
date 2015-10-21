@@ -15,15 +15,15 @@ Installation
 
 **Prerequisite**
 
-DMWE is built on top of the DMTK parameter sever, therefore please download and build this project first.
+DMWE is built on top of the DMTK parameter sever, therefore please download and build DMTK first (http://ms-dmtk.azurewebsites.net/multiverso_doc.html).
 
 **For Windows**
 
-Download and build the dependence by opening windows\distributed_skipgram_mixture\distributed_skipgram_mixture.sln using Visual Studio 2013 and building all the projects.
+Open windows\distributed_skipgram_mixture\distributed_skipgram_mixture.sln using Visual Studio 2013. Add the necessary include path (for example, the path for DMTK multiverso) and lib path. Then build the solution.
 
 **For Ubuntu (Tested on Ubuntu 12.04)**
 
-Download and build the dependence by running $ sh scripts/build.sh. Modify the include and lib path in Makefile. Then run $ make all -j4.
+Download and build by running $ sh scripts/build.sh. Modify the include and lib path in Makefile. Then run $ make all -j4.
 
 HyperParameter Settings
 ----------
