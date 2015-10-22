@@ -16,8 +16,8 @@ def execute(command):
 		
 #parameter w.r.t. MPI
 work_dir = 'D:\\Your Directory'
-port = '5719'
-machinefile= 'host.txt'
+port = 'Your port number for MPI'
+machinefile= 'Your host file for MPI'
 
 #parameter w.r.t. SG-Mixture Training
 size = 50
@@ -42,7 +42,7 @@ huff_tree_file = 'huff.txt'
 outputlayer_binary_file = 'emb_out.bin'
 outputlayer_text_file = 'emb_out.txt'
 preload_cnt = 5
-data_block_size = 50000
+data_block_size = 50000 #set it to 750000 in clueweb
 pipline = '0'
 multinomial = '0'
 
@@ -52,4 +52,5 @@ sg_mixture_args  = ' -train_file {0} -binary_embedding_file {1} -text_embedding_
 print mpi_args
 print sg_mixture_args
 
+#execute MPI
 proc = execute("mpiexec " + mpi_args + 'distributed_skipgram_mixture ' + sg_mixture_args)
