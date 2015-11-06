@@ -8,7 +8,7 @@ CXXFLAGS = -O3 \
            -fno-omit-frame-pointer
 
 MULTIVERSO_DIR = $(PROJECT)/multiverso
-MULTIVERSO_INC = $(MULTIVERSO_DIR)/include/multiverso
+MULTIVERSO_INC = $(MULTIVERSO_DIR)/include/
 MULTIVERSO_LIB = $(MULTIVERSO_DIR)/lib
 THIRD_PARTY_LIB = $(MULTIVERSO_DIR)/third_party/lib
 
