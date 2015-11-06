@@ -1,4 +1,4 @@
-#include "SkipGramMixtureNeuralNetwork.h"
+#include "skipgram_mixture_neural_network.h"
 
 template<typename T>
 SkipGramMixtureNeuralNetwork<T>::SkipGramMixtureNeuralNetwork(Option* option, HuffmanEncoder* huffmanEncoder, WordSenseInfo* word_sense_info, Dictionary* dic, int dicSize)
@@ -282,7 +282,7 @@ std::vector<int>& SkipGramMixtureNeuralNetwork<T>::GetOutputLayerNodes()
 }
 
 template<typename T>
-void SkipGramMixtureNeuralNetwork<T>::SetinputEmbeddingWeights(int input_node_id, T* ptr)
+void SkipGramMixtureNeuralNetwork<T>::SetInputEmbeddingWeights(int input_node_id, T* ptr)
 {
 	m_input_embedding_weights_ptr[input_node_id] = ptr;
 }
@@ -306,7 +306,7 @@ void SkipGramMixtureNeuralNetwork<T>::SetSensePriorParaWeights(int input_node_id
 }
 
 template<typename T>
-T* SkipGramMixtureNeuralNetwork<T>::GetinputEmbeddingWeights(int input_node_id)
+T* SkipGramMixtureNeuralNetwork<T>::GetInputEmbeddingWeights(int input_node_id)
 {
 	return m_input_embedding_weights_ptr[input_node_id];
 }

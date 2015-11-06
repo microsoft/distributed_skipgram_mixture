@@ -2,9 +2,9 @@
 
 #include <thread>
 #include <chrono>
-#include <multiverso.h>
-#include <log.h>
-#include <barrier.h>
+#include <multiverso/multiverso.h>
+#include <multiverso/log.h>
+#include <multiverso/barrier.h>
 
 #include "data_block.h"
 #include "multiverso_tablesid.h"

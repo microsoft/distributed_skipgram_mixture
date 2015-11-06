@@ -1,6 +1,6 @@
 #pragma once
 
-#include <multiverso.h>
+#include <multiverso/multiverso.h>
 /*!
 * \brief Defines the index of parameter tables.
 */

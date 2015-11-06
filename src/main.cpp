@@ -6,8 +6,8 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include <multiverso.h>
-#include <barrier.h>
+#include <multiverso/multiverso.h>
+#include <multiverso/barrier.h>
 
 #include "dictionary.h"
 #include "huffman_encoder.h"

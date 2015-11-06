@@ -7,7 +7,7 @@
 *	- v-fetia
 */
 #include "util.h"
-#include <multiverso.h>
+#include <multiverso/multiverso.h>
 #include "huffman_encoder.h"
 
 /*!

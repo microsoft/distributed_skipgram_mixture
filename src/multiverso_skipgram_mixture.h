@@ -6,8 +6,8 @@
 #include <string.h>
 #include <unordered_set>
 #include <unordered_map>
-#include <multiverso.h>
-#include <log.h>
+#include <multiverso/multiverso.h>
+#include <multiverso/log.h>
 
 #include "util.h"
 #include "huffman_encoder.h"

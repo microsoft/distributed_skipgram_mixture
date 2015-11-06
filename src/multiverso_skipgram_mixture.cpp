@@ -1,4 +1,4 @@
-#include "MultiversoSkipGramMixture.h"
+#include "multiverso_skipgram_mixture.h"
 #include <algorithm>
 
 MultiversoSkipGramMixture::MultiversoSkipGramMixture(Option *option, Dictionary *dictionary, HuffmanEncoder *huffman_encoder, Reader *reader)

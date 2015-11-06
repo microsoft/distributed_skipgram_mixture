@@ -1,12 +1,11 @@
 #pragma once
 
-#include <multiverso.h>
+#include <multiverso/multiverso.h>
 #include "data_block.h"
 #include "multiverso_tablesid.h"
 #include "util.h"
 #include "huffman_encoder.h"
 #include "skipgram_mixture_neural_network.h"
-#include "log.h"
 
 
 /*!
