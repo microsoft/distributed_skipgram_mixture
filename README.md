@@ -22,7 +22,7 @@ Open windows\distributed_skipgram_mixture\distributed_skipgram_mixture.sln using
 
 **For Ubuntu (Tested on Ubuntu 12.04)**
 
-Download and build by running $ sh scripts/build.sh. Modify the include and lib path in Makefile. Then run $ make all -j4.
+Download and build by running $ sh build.sh. Modify the include and lib path in Makefile. Then run $ make all -j4.
 
 HyperParameter Settings
 ----------
