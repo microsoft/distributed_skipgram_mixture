@@ -77,7 +77,7 @@ int64_t LoadVocab(Option *opt, Dictionary *dictionary, HuffmanEncoder *huffman_e
 	total_words = 0;
 	for (int i = 0; i < dictionary->Size(); ++i)
 		total_words += dictionary->GetWordInfo(i)->freq;
-	printf("Words in Corpus %I64d\n", total_words);
+	printf("Words in corpus %I64d\n", total_words);
 	huffman_encoder->BuildFromTermFrequency(dictionary);
 	fclose(fid);
 
