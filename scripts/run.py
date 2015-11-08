@@ -8,22 +8,22 @@ import subprocess
 
 from subprocess import STDOUT
 
+#Execute a subprocess with standard output
 def execute(command):    
     popen = subprocess.Popen(command, stdout=subprocess.PIPE)
     lines_iterator = iter(popen.stdout.readline, b"")
     for line in lines_iterator:
         print(line) # yield line
 		
-#parameter w.r.t. MPI
+#Parameter w.r.t. MPI
 work_dir = 'Your Directory'
 port = 'Your port number for MPI'
 machinefile= 'Your host file for MPI'
 
-#parameter w.r.t. SG-Mixture Training
+#Parameter w.r.t. SG-Mixture Training
 size = 50
 train = 'Your Training File'
 read_vocab = 'Your Vocab File'
-sense_file = 'Your Sense File, see sense_file.txt as an example'
 binary = 2
 init_learning_rate = 0.025
 epoch = 1
@@ -32,18 +32,38 @@ threads = 8
 mincount = 5
 EM_iteration = 1
 momentum = 0.05
+
+default_sense = 1
+#Default number of senses for multi sense words
+sense_num_multi = 5
+
+'''
+Three ways of specifying multi sense words, each with sense_num_multi prototypes:
+1)Set top_n frequent words
+2)Set top_ratio (lie between 0 to 1) frequent words
+3)Write all these words into sense_file
+'''
 top_n = 0
 top_ratio = 0
-default_sense = 1
-sense_num_multi = 5
+sense_file = 'Your Sense File, see sense_file.txt as an example'
+
+#Output files
 binary_embedding_file = 'emb.bin'
 text_embedding_file = 'emb.txt'
 huff_tree_file = 'huff.txt'
 outputlayer_binary_file = 'emb_out.bin'
 outputlayer_text_file = 'emb_out.txt'
+
 preload_cnt = 5
-data_block_size = 50000 #set it to 750000 in clueweb
+
+#Number of sentences for each datablock.
+#Warning: for wiki2014, set it to 50000, for clueweb09, set it to 750000. Other values are not tested.
+data_block_size = 50000
+
+#Warning: enable pipeline in multiverso will lead to some performance drop
 pipline = 0
+
+#Whether to store the multinomial parameters in its original form. If false, will store there log values instead.
 multinomial = 0
 
 mpi_args = '-port {0} -wdir {1} -machinefile {2} '.format(port, work_dir, machinefile)
@@ -52,5 +72,5 @@ sg_mixture_args  = ' -train_file {0} -binary_embedding_file {1} -text_embedding_
 print mpi_args
 print sg_mixture_args
 
-#execute MPI
+#Execute MPI
 proc = execute("mpiexec " + mpi_args + 'distributed_skipgram_mixture ' + sg_mixture_args)
