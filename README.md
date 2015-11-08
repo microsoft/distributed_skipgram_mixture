@@ -26,7 +26,7 @@ Download and build by running $ sh build.sh. Modify the include and lib path in 
 
 HyperParameter Settings
 ----------
-See parameters_settings.txt.
+See ./scripts/parameters_settings.txt and ./scripts/run.py.
 
 Reference
 ----------
