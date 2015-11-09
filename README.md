@@ -14,7 +14,7 @@ Build
 
 **Prerequisite**
 
-DMWE is built on top of the DMTK parameter sever, therefore please download and build DMTK first (http://ms-dmtk.azurewebsites.net/multiverso_doc.html).
+DMWE is built on top of the DMTK parameter sever, therefore please download and build DMTK first (https://github.com/Microsoft/multiverso).
 
 **For Windows**
 
