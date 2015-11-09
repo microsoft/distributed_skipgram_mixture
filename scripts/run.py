@@ -63,7 +63,7 @@ data_block_size = 50000
 #Warning: enable pipeline in multiverso will lead to some performance drop
 pipline = 0
 
-#Whether to store the multinomial parameters in its original form. If false, will store there log values instead.
+#Whether to store the multinomial parameters in its original form. If false, will store their log values instead.
 multinomial = 0
 
 mpi_args = '-port {0} -wdir {1} -machinefile {2} '.format(port, work_dir, machinefile)

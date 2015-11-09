@@ -1,5 +1,3 @@
-
-
 The parameters for Skip-Gram Mixture Multi-Sense model:
 
 /************************For IO************************/
