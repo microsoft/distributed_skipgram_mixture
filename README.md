@@ -30,4 +30,4 @@ See ./scripts/parameters_settings.txt and ./scripts/run.py.
 
 Reference
 ----------
-[1] Tian, F., Dai, H., Bian, J., Gao, B., Zhang, R., Chen, E., & Liu, T. Y. (2014). A probabilistic model for learning multi-prototype word embeddings. In Proceedings of COLING (pp. 151-160).
+[1] Tian, F., Dai, H., Bian, J., Gao, B., Zhang, R., Chen, E., & Liu, T. Y. (2014). [A probabilistic model for learning multi-prototype word embeddings](http://www.aclweb.org/anthology/C14-1016). In Proceedings of COLING (pp. 151-160).
