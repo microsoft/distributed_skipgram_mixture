@@ -3,7 +3,7 @@ Distributed Multisense Word Embedding
 
 The Distributed Multisense Word Embedding(DMWE) tool is a parallelization of the Skip-Gram Mixture [1] algorithm on top of the DMTK parameter server. It provides an efficient "scaling to industry size" solution for multi sense word embedding.
 
-For more details, please view our website http://ms-dmtk.azurewebsites.net/word2vec_multi.html.
+For more details, please view our website [http://www.dmtk.io](http://www.dmtk.io)
 
 Download 
 ----------
@@ -14,7 +14,7 @@ Build
 
 **Prerequisite**
 
-DMWE is built on top of the DMTK parameter sever, therefore please download and build DMTK first (http://ms-dmtk.azurewebsites.net/multiverso_doc.html).
+DMWE is built on top of the DMTK parameter sever, therefore please download and build DMTK first (https://github.com/Microsoft/multiverso).
 
 **For Windows**
 
