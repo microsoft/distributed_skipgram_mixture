@@ -23,7 +23,11 @@ machinefile= 'Your host file for MPI'
 #Parameter w.r.t. SG-Mixture Training
 size = 50
 train = 'Your Training File'
-read_vocab = 'Your Vocab File'
+'''
+Please visit http://ms-dmtk.azurewebsites.net/word2vec_multi.html#p5 for wiki2014 and clueweb.
+In running multi machine version, please separate the file and distribute the subfiles into different machines.
+'''
+read_vocab = 'Your Vocab File' #each line of the file stores 'Word\tCount' info.
 binary = 2
 init_learning_rate = 0.025
 epoch = 1

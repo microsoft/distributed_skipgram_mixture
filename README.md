@@ -24,9 +24,9 @@ Open windows\distributed_skipgram_mixture\distributed_skipgram_mixture.sln using
 
 Download and build by running ```$ sh build.sh```. Modify the include and lib path in Makefile. Then run ```$ make all -j4```.
 
-HyperParameter Settings
+Run
 ----------
-See ```scripts/parameters_settings.txt``` and ```scripts/run.py```.
+For parameter settings, see ```scripts/parameters_settings.txt```. For running it, see the example script ```scripts/run.py```.
 
 Reference
 ----------
